@@ -431,6 +431,12 @@ public:
    U32 packUpdate   (NetConnection *conn, U32 mask, BitStream *stream);
    void unpackUpdate(NetConnection *conn,           BitStream *stream);
    void inspectPostApply();
+
+	//////////////////////TERRAIN MASTER /////////////////////////////////////
+	bool mIsEdge;
+	bool mNeighborTerrainLoaded[8];
+	Point3F mNeighborTerrainPos[8];
+
 };
 
 #endif // _TERRDATA_H_

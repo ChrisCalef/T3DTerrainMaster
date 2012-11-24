@@ -195,6 +195,12 @@ TerrainBlock::TerrainBlock()
 {
    mTypeMask = TerrainObjectType | StaticObjectType | StaticShapeObjectType;
    mNetFlags.set(Ghostable | ScopeAlways);
+	mIsEdge = true;
+	for (U32 i=0;i<8;i++)
+	{
+		mNeighborTerrainPos[i] = Point3F(0,0,0);
+		mNeighborTerrainLoaded[i] = false;
+	}
 }
 
 
