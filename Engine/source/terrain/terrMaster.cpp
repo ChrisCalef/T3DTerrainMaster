@@ -30,7 +30,7 @@ TerrainMaster::TerrainMaster()
 	mUpperMapY = 0;
 	mCheckCycle = 1000;
 	mCurrentTick = 0;
-	mSQL = new SQLiteObject();
+	//mSQL = new SQLiteObject();
 	mClientPos.zero();
 	mWorldBlockSize = 2560.0;//2.5km squares, by default.
 	mFirstTerrain = false;
@@ -51,16 +51,16 @@ TerrainMaster::TerrainMaster()
 	mNeighTerrAdj[6].set(-1,0);
 	mNeighTerrAdj[7].set(-1,1);
 
-	if (mSQL->OpenDatabase("Ecopocalypse.db"))//HERE: open this up to a script variable maybe?
-	{
-		Con::printf("Opened the database!!!!!");
-	}
+	//if (mSQL->OpenDatabase("Ecopocalypse.db"))//HERE: open this up to a script variable maybe?
+	//{
+	//	Con::printf("Opened the database!!!!!");
+	//}
 }
 
 TerrainMaster::~TerrainMaster()
 {	
-	mSQL->CloseDatabase();
-	delete mSQL;
+	//mSQL->CloseDatabase();
+	//delete mSQL;
 }
 
 void TerrainMaster::initPersistFields()
@@ -98,26 +98,26 @@ bool TerrainMaster::onAdd()
    if ( !Parent::onAdd() )
       return false;
 
-	if (!mSQL) return false;
+	//if (!mSQL) return false;
 
-	char query[512];
-	int result;//WARNING body_id,joint_id,
-	sqlite_resultset *resultSet;
+	//char query[512];
+	//int result;//WARNING body_id,joint_id,
+	//sqlite_resultset *resultSet;
 
-	sprintf(query,"SELECT username,start_x,start_y,start_z FROM clientConnection;");
-	result = mSQL->ExecuteSQL(query);
-	resultSet = mSQL->GetResultSet(result);
-	if (resultSet->iNumRows==0)
-	{
-		mSQL->CloseDatabase();
-		delete mSQL;
-		return false;
-	} else {
-		mClientUsername = resultSet->vRows[0]->vColumnValues[0];
-		Point3F pos = Point3F(dAtof(resultSet->vRows[0]->vColumnValues[1]),dAtof(resultSet->vRows[0]->vColumnValues[2]),dAtof(resultSet->vRows[0]->vColumnValues[3]));
-		mClientPos = pos;
-		Con::printf("Found a client connection in the database! username: %s  pos %f %f %f",mClientUsername.c_str(),pos.x,pos.y,pos.z);
-	}
+	//sprintf(query,"SELECT username,start_x,start_y,start_z FROM clientConnection;");
+	//result = mSQL->ExecuteSQL(query);
+	//resultSet = mSQL->GetResultSet(result);
+	//if (resultSet->iNumRows==0)
+	//{
+	//	mSQL->CloseDatabase();
+	//	delete mSQL;
+	//	return false;
+	//} else {
+	//	mClientUsername = resultSet->vRows[0]->vColumnValues[0];
+	//	Point3F pos = Point3F(dAtof(resultSet->vRows[0]->vColumnValues[1]),dAtof(resultSet->vRows[0]->vColumnValues[2]),dAtof(resultSet->vRows[0]->vColumnValues[3]));
+	//	mClientPos = pos;
+	//	Con::printf("Found a client connection in the database! username: %s  pos %f %f %f",mClientUsername.c_str(),pos.x,pos.y,pos.z);
+	//}
 
 	mCurrentTerrain = NULL;
 
@@ -231,7 +231,6 @@ void TerrainMaster::loadTerrain(Point3F pos,Point2I grid)
 	//For now this makes it non null, which is all we need.
 }
 
-U32 temp=0;
 void TerrainMaster::checkTerrain()
 {
 	//NetConnection * toClient = NetConnection::getLocalClientConnection();
@@ -249,9 +248,9 @@ void TerrainMaster::checkTerrain()
    gServerContainer.findObjectList(bounds, CameraObjectType, &kCameras);
 	gServerContainer.findObjectList(bounds, PlayerObjectType, &kPlayers);
 	gServerContainer.findObjectList(bounds, TerrainObjectType, &kTerrains);
-	
-	//if (kCameras.size()!=1)//FIX: Deal with multiple cameras, and ...
-	//	return;
+		
+	Point3F clientPos;
+	clientPos.zero();
 
 	//Now, determine whether we are free camera or first person/third person mode, use appropriate position.
 	bool cameraInControl = false;
@@ -262,30 +261,40 @@ void TerrainMaster::checkTerrain()
 	//if (kPlayers.size()==1)//FIX!  This will fail as soon as there are bots.  
 	//{                      //Need to find only players WITH controlling clients.
 
-	Vector<Point3F> clientPosVec; 
-	Point3F clientPos;
+	//Vector<Point3F> clientPosVec; 
+
 	for (U32 i=0;i<kPlayers.size();i++)
 	{
 
 		Player *myPlayer = (Player *)(kPlayers[i]);
 		Point3F playerPos = myPlayer->getPosition();
-		Camera *myCamera = dynamic_cast<Camera *>(kCameras[i]);//... sort out which belongs to controlling client.
-		Point3F cameraPos = myCamera->getPosition();
-
-
-		clientPosVec.increment();
-		GameConnection *cameraClient = myCamera->getControllingClient();
-		GameConnection *playerClient = myPlayer->getControllingClient();
-		if (cameraClient) 
+		if (kCameras.size()>0)
 		{
-			cameraInControl = true;
-			clientPosVec.last() = cameraPos;
-		} else if (playerClient) {
-			playerInControl = true;
-			clientPosVec.last() = playerPos;
+			Camera *myCamera = dynamic_cast<Camera *>(kCameras[i]);//... sort out which belongs to controlling client.
+			Point3F cameraPos = myCamera->getPosition();
+
+
+			//clientPosVec.increment();
+			GameConnection *cameraClient = myCamera->getControllingClient();
+			GameConnection *playerClient = myPlayer->getControllingClient();
+			if (cameraClient) 
+			{
+				cameraInControl = true;
+				clientPos = cameraPos;
+				//clientPosVec.last() = cameraPos;
+			} else if (playerClient) {
+				playerInControl = true;
+				clientPos = playerPos;
+				//clientPosVec.last() = playerPos;
+			} 
+		} else {
+			clientPos = playerPos;
 		}
 	} 
-	clientPos = clientPosVec[0];//TEMP!  Need to do loop below for each clientPos, but for now just do it for 
+	if (clientPos.len()==0.0)
+		return;//If an error condition results in clientPos = (0,0,0), bail.
+
+	//clientPos = clientPosVec[0];//TEMP!  Need to do loop below for each clientPos, but for now just do it for 
 	//the first.
 	//////////////////////////////////////////////////////
 
@@ -341,6 +350,7 @@ void TerrainMaster::checkTerrain()
 		return;
 	}
 
+
 	/////////////////////////
 	//checkEntities(clientPos,500.0);//(pos,detectRange)
 	/////////////////////////
@@ -362,7 +372,7 @@ void TerrainMaster::checkTerrain()
 						S32 index = (grid.y*mNumGridColumns)+grid.x;
 						if (!mLoadingTerrains[index] && !mActiveTerrains[index] )
 						{
-							Con::printf("loading terrain neighbor at: %d %d  diff len %f",grid.x,grid.y,diff.len());
+							//Con::printf("loading terrain neighbor at: %d %d  diff len %f",grid.x,grid.y,diff.len());
 							loadTerrain(pos,grid); 
 							mLoadingTerrains[index] = true;
 						}
@@ -406,7 +416,7 @@ void TerrainMaster::checkTerrain()
 			char txtPos[255];
 			sprintf(txtPos,"%f %f %f",terrPos.x,terrPos.y,terrPos.z);
 			Con::executef("dropTerrainBlock",txtPos);			
-			Con::printf("Called out to dropTerrainBlock, loadedTerrains %d",mLoadedTerrains.size());
+			//Con::printf("Called out to dropTerrainBlock, loadedTerrains %d",mLoadedTerrains.size());
 		}
 	}
 
@@ -456,97 +466,97 @@ void TerrainMaster::checkTerrain()
 	mCurrentTick++;
 }
 
-void TerrainMaster::checkEntities(Point3F pos,F32 range)
-{
-	//Ultimately, I think we'll have an entity (or sceneobject, or something) class which contains only position data, and search 
-	//for those here, while linking out to all the specific entity types like static shape, interior, aiPlayer, forest, etc.
-	if (!mSQL)
-		return;
-
-	char query[512];
-	int id,result,result2;//WARNING body_id,joint_id,
-	sqlite_resultset *resultSet,*resultSet2;
-
-	//HERE: ultimately, for efficiency's sake, I could really use an internal SQL function to compare vectors, 
-	//before querying the whole table.  (LATER)
-	sprintf(query,"SELECT * FROM entity;");//WHERE VectorDiff(pos_x,pos_y,pos_z,pos.x,pos.y,pos.z)<DETECT_RANGE
-	result = mSQL->ExecuteSQL(query);
-	resultSet = mSQL->GetResultSet(result);
-	//for (U32 i=0;i<resultSet->iNumRows;i++)
-	//{
-	//	Con::printf("Found entity from table %s  id %d  range %f",resultSet->vRows[i]->vColumnValues[1],
-	//					dAtoi(resultSet->vRows[i]->vColumnValues[2]),dAtof(resultSet->vRows[i]->vColumnValues[6]));
-	//}
-	for (U32 i=0;i<resultSet->iNumRows;i++)
-	{
-		S32 entity_id = dAtoi(resultSet->vRows[i]->vColumnValues[0]);
-		String tablename = resultSet->vRows[i]->vColumnValues[1];
-		S32 table_id = dAtoi(resultSet->vRows[i]->vColumnValues[2]);
-		Point3F entity_pos = Point3F(dAtof(resultSet->vRows[i]->vColumnValues[3]),
-												dAtof(resultSet->vRows[i]->vColumnValues[4]),
-												dAtof(resultSet->vRows[i]->vColumnValues[5]));
-		F32 range = dAtof(resultSet->vRows[i]->vColumnValues[6]);
-		Point3F diff = pos - entity_pos;
-		//Con::printf("diff = %f",diff.len());
-		if ((range==0.0)||(diff.len()<range))
-		{
-			if (!strcmp(tablename.c_str(),"blob"))
-			{
-				if (mBlobs[table_id]==false)
-				{
-					sprintf(query,"SELECT content FROM blob WHERE id=%d;",table_id);
-					result2 = mSQL->ExecuteSQL(query);
-					resultSet2 = mSQL->GetResultSet(result2);
-					if (resultSet2->iNumRows==1)
-					{
-						Con::executef("eval",resultSet2->vRows[0]->vColumnValues[0]);
-						Con::printf("evaluating code from db:  %s",resultSet2->vRows[0]->vColumnValues[0]);
-						mBlobs[table_id] = true;
-					}
-				}
-			} else if (!strcmp(tablename.c_str(),"staticShape")) {
-				if (mStatics[table_id]==false)
-				{
-					sprintf(query,"SELECT * FROM staticShape WHERE id=%d;",table_id);//WHERE VectorDiff(pos_x,pos_y,pos_z,pos.x,pos.y,pos.z)<DETECT_RANGE
-					result2 = mSQL->ExecuteSQL(query);
-					resultSet2 = mSQL->GetResultSet(result2);
-					if (resultSet2->iNumRows==1)
-					{
-						S32 id = dAtoi(resultSet2->vRows[i]->vColumnValues[0]);
-						String filename = resultSet2->vRows[i]->vColumnValues[1];
-						Point3F pos = Point3F(dAtof(resultSet2->vRows[i]->vColumnValues[2]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[3]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[4]));
-						QuatF q = QuatF(dAtof(resultSet2->vRows[i]->vColumnValues[5]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[6]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[7]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[8]));
-						Point3F scale = Point3F(dAtof(resultSet2->vRows[i]->vColumnValues[9]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[10]),
-							dAtof(resultSet2->vRows[i]->vColumnValues[11]));
-
-						char txtPos[128],txtQuat[128],txtScale[128],txtID[12];	
-						Con::printf("Found a static shape! filename: %s  pos %f %f %f  quat ",filename.c_str(),pos.x,pos.y,pos.z,q.x,q.y,q.z,q.w);
-						sprintf(txtPos,"%f %f %f",pos.x,pos.y,pos.z);
-						sprintf(txtQuat,"%f %f %f %f",q.x,q.y,q.z,q.w);
-						sprintf(txtScale,"%f %f %f",scale.x,scale.y,scale.z);
-						sprintf(txtID,"%d",id);
-						Con::executef("loadStaticShape",filename.c_str(),txtPos,txtQuat,txtScale,txtID);
-						mStatics[table_id] = true;
-					}
-				}
-			}
-		}
-	}
-}
+//void TerrainMaster::checkEntities(Point3F pos,F32 range)
+//{
+//	//Ultimately, I think we'll have an entity (or sceneobject, or something) class which contains only position data, and search 
+//	//for those here, while linking out to all the specific entity types like static shape, interior, aiPlayer, forest, etc.
+//	if (!mSQL)
+//		return;
+//
+//	char query[512];
+//	int id,result,result2;//WARNING body_id,joint_id,
+//	sqlite_resultset *resultSet,*resultSet2;
+//
+//	//HERE: ultimately, for efficiency's sake, I could really use an internal SQL function to compare vectors, 
+//	//before querying the whole table.  (LATER)
+//	sprintf(query,"SELECT * FROM entity;");//WHERE VectorDiff(pos_x,pos_y,pos_z,pos.x,pos.y,pos.z)<DETECT_RANGE
+//	result = mSQL->ExecuteSQL(query);
+//	resultSet = mSQL->GetResultSet(result);
+//	//for (U32 i=0;i<resultSet->iNumRows;i++)
+//	//{
+//	//	Con::printf("Found entity from table %s  id %d  range %f",resultSet->vRows[i]->vColumnValues[1],
+//	//					dAtoi(resultSet->vRows[i]->vColumnValues[2]),dAtof(resultSet->vRows[i]->vColumnValues[6]));
+//	//}
+//	for (U32 i=0;i<resultSet->iNumRows;i++)
+//	{
+//		S32 entity_id = dAtoi(resultSet->vRows[i]->vColumnValues[0]);
+//		String tablename = resultSet->vRows[i]->vColumnValues[1];
+//		S32 table_id = dAtoi(resultSet->vRows[i]->vColumnValues[2]);
+//		Point3F entity_pos = Point3F(dAtof(resultSet->vRows[i]->vColumnValues[3]),
+//												dAtof(resultSet->vRows[i]->vColumnValues[4]),
+//												dAtof(resultSet->vRows[i]->vColumnValues[5]));
+//		F32 range = dAtof(resultSet->vRows[i]->vColumnValues[6]);
+//		Point3F diff = pos - entity_pos;
+//		//Con::printf("diff = %f",diff.len());
+//		if ((range==0.0)||(diff.len()<range))
+//		{
+//			if (!strcmp(tablename.c_str(),"blob"))
+//			{
+//				if (mBlobs[table_id]==false)
+//				{
+//					sprintf(query,"SELECT content FROM blob WHERE id=%d;",table_id);
+//					result2 = mSQL->ExecuteSQL(query);
+//					resultSet2 = mSQL->GetResultSet(result2);
+//					if (resultSet2->iNumRows==1)
+//					{
+//						Con::executef("eval",resultSet2->vRows[0]->vColumnValues[0]);
+//						Con::printf("evaluating code from db:  %s",resultSet2->vRows[0]->vColumnValues[0]);
+//						mBlobs[table_id] = true;
+//					}
+//				}
+//			} else if (!strcmp(tablename.c_str(),"staticShape")) {
+//				if (mStatics[table_id]==false)
+//				{
+//					sprintf(query,"SELECT * FROM staticShape WHERE id=%d;",table_id);//WHERE VectorDiff(pos_x,pos_y,pos_z,pos.x,pos.y,pos.z)<DETECT_RANGE
+//					result2 = mSQL->ExecuteSQL(query);
+//					resultSet2 = mSQL->GetResultSet(result2);
+//					if (resultSet2->iNumRows==1)
+//					{
+//						S32 id = dAtoi(resultSet2->vRows[i]->vColumnValues[0]);
+//						String filename = resultSet2->vRows[i]->vColumnValues[1];
+//						Point3F pos = Point3F(dAtof(resultSet2->vRows[i]->vColumnValues[2]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[3]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[4]));
+//						QuatF q = QuatF(dAtof(resultSet2->vRows[i]->vColumnValues[5]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[6]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[7]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[8]));
+//						Point3F scale = Point3F(dAtof(resultSet2->vRows[i]->vColumnValues[9]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[10]),
+//							dAtof(resultSet2->vRows[i]->vColumnValues[11]));
+//
+//						char txtPos[128],txtQuat[128],txtScale[128],txtID[12];	
+//						Con::printf("Found a static shape! filename: %s  pos %f %f %f  quat ",filename.c_str(),pos.x,pos.y,pos.z,q.x,q.y,q.z,q.w);
+//						sprintf(txtPos,"%f %f %f",pos.x,pos.y,pos.z);
+//						sprintf(txtQuat,"%f %f %f %f",q.x,q.y,q.z,q.w);
+//						sprintf(txtScale,"%f %f %f",scale.x,scale.y,scale.z);
+//						sprintf(txtID,"%d",id);
+//						Con::executef("loadStaticShape",filename.c_str(),txtPos,txtQuat,txtScale,txtID);
+//						mStatics[table_id] = true;
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
 
 void TerrainMaster::setClientPos(Point3F pos)
 {
 	mClientPos.set(pos);
-	if (!mSQL) return;
+	//if (!mSQL) return;
 
-	char query[512];
-	int id,result;
+	//char query[512];
+	//int id,result;
 
 	//Holding off on this for now, was saving bad data, (0,0,512) somehow.
 	//sprintf(query,"UPDATE clientConnection SET start_x=%f,start_y=%f,start_z=%f WHERE username='%s';",

@@ -59,6 +59,12 @@ function Armor::onAdd(%this, %obj)
 
    // Calling updateHealth() must be delayed now... for some reason
    %obj.schedule(50, "updateHealth");
+   
+   //Will this work?  Do we have a terrain master yet?
+   //checkTerrain();//This also assumes only one player, the whole thing
+   //needs a rewrite anyway to go multiplayer properly.
+   //schedule(10000,0,checkTerrain);//Nope, better give it a few seconds to get assembled...
+   tryCheckTerrain();//Fine, give the check-for-theTM test its own function.
 }
 
 function Armor::onRemove(%this, %obj)

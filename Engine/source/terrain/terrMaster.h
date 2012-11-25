@@ -13,7 +13,7 @@
 #endif
 
 
-#include "console/SQLiteObject.h"
+//#include "console/SQLiteObject.h"
 
 #define TM_MAX_STATICS  1000 
 #define TM_MAX_TERRAINS  1000 
@@ -41,7 +41,7 @@ public:
    FileName mOutputDirectory;
    FileName mInputDirectory;
 
-	SQLiteObject *mSQL;
+	//SQLiteObject *mSQL;
 
 	Point2I mNeighTerrAdj[8];//To describe the ring of neighbor terrains, [0] = N =(0,1), goes clockwise.
 
