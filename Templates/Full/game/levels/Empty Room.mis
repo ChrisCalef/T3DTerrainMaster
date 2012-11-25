@@ -96,7 +96,7 @@ new SimGroup(MissionGroup) {
 
       new SpawnSphere() {
          canSaveDynamicFields = "1";
-         Position = "200 200 1000";
+         Position = "300 200 600";
          rotation = "1 0 0 0";
          scale = "1 1 1";
          dataBlock = "SpawnSphereMarker";
