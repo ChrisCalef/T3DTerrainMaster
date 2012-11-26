@@ -1,0 +1,130 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   canSave = "1";
+   canSaveDynamicFields = "1";
+      enabled = "1";
+
+   new LevelInfo(theLevelInfo) {
+      nearClip = "0.1";
+      visibleDistance = "1e+006";
+      decalBias = "0.0015";
+      fogColor = "0.6 0.6 0.7 1";
+      fogDensity = "0";
+      fogDensityOffset = "700";
+      fogAtmosphereHeight = "0";
+      canvasClearColor = "0 0 0 255";
+      ambientLightBlendPhase = "1";
+      ambientLightBlendCurve = "0 0 -1 -1";
+      advancedLightmapSupport = "0";
+      soundAmbience = "AudioAmbienceDefault";
+      soundDistanceModel = "Linear";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         desc0 = "A single terrain square, 256 x 256 points.";
+         enabled = "1";
+         LevelName = "Import Terrain";
+   };
+   new ScatterSky() {
+      skyBrightness = "15";
+      mieScattering = "0.0015";
+      rayleighScattering = "0.0035";
+      sunScale = "1 1 0.8 1";
+      ambientScale = "0.5 0.5 0.4 1";
+      fogScale = "1 1 1 1";
+      exposure = "0.85";
+      azimuth = "290";
+      elevation = "60";
+      moonAzimuth = "0";
+      moonElevation = "45";
+      castShadows = "1";
+      brightness = "1";
+      flareScale = "1";
+      nightColor = "0.0196078 0.0117647 0.109804 1";
+      nightFogColor = "0.0196078 0.0117647 0.109804 1";
+      moonEnabled = "1";
+      moonScale = "0.2";
+      moonLightColor = "0.192157 0.192157 0.192157 1";
+      useNightCubemap = "0";
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "512";
+      overDarkFactor = "2000 1000 500 100";
+      shadowDistance = "400";
+      shadowSoftness = "0.15";
+      numSplits = "4";
+      logWeight = "0.91";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+      representedInLightmap = "0";
+      shadowDarkenColor = "0 0 0 -1";
+      includeLightmappedGeometryInShadow = "0";
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         sunBrightness = "50";
+         zOffset = "20000";
+   };
+   new SimGroup(PlayerDropPoints) {
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         enabled = "1";
+
+      new SpawnSphere() {
+         autoSpawn = "0";
+         radius = "5";
+         sphereWeight = "1";
+         indoorWeight = "1";
+         outdoorWeight = "1";
+         isAIControlled = "0";
+         dataBlock = "SpawnSphereMarker";
+         position = "100 100 100";
+         rotation = "1 0 0 0";
+         scale = "1 1 1";
+         canSave = "1";
+         canSaveDynamicFields = "1";
+            enabled = "1";
+            homingCount = "0";
+            lockCount = "0";
+      };
+   };   
+   new TerrainMaster(theTM) {
+      squareSize = "10";
+      matrixFile = "art/terrains/SouthernWillamette.bin";
+      outputDirectory = "art/terrains/SW256/backup";
+      inputDirectory = "art/terrains/SW256";
+      checkCycle = "1000";
+      loadDistance = "5100";
+      dropDistance = "7650";
+      left_map_x = "459750";
+      lower_map_y = "4843900";
+      right_map_x = "520120";
+      upper_map_y = "4899540";
+      numRows = "5565";
+      numColumns = "6038";
+      numGridRows = "21";
+      numGridColumns = "23";
+      minHeight = "88";
+      maxHeight = "1175";
+      worldBlockSize = "2560";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+   };
+   new TerrainBlock(BaseTerrain) {
+      terrainFile = "art/terrains/ImportTerrain.ter";
+      castShadows = "1";
+      squareSize = "10";
+      baseTexSize = "1024";
+      lightMapSize = "256";
+      screenError = "16";
+      position = "0 0 -500";
+      rotation = "1 0 0 0";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+   };  
+};
+//--- OBJECT WRITE END ---
+

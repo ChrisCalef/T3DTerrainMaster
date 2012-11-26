@@ -159,16 +159,19 @@ void TerrainMaster::setTerrainHeights(S32 start_x,S32 start_y,S32 sample)
 				mCurrentTerrain = block;
 		}
 	}
+	if (!mCurrentTerrain) Con::printf("couldn't find my terrain!");
+
 	if (!mCurrentTerrain) return;
 
-	Con::printf("Terrain Master:  matrixFile %s  minHeight %f  maxHeight %f  numRows %d",
-		mMatrixFile.c_str(),mMinHeight,mMaxHeight,mNumRows);
+	Con::printf("Terrain Master:  matrixFile %s  minHeight %f  maxHeight %f  numRows %d blocksize: %d  file %s",
+		mMatrixFile.c_str(),mMinHeight,mMaxHeight,mNumRows,mCurrentTerrain->getBlockSize(),mMatrixFile.c_str());
 
 	FileStream fs;
 	char filename[512];
 
 	if (fs.open(mMatrixFile.c_str(),Torque::FS::File::Read))
 	{
+		Con::printf("Opened the matrix file: %s",mMatrixFile.c_str());
 		//char filename[255];
 		//sprintf(filename,"%s",mMatrixFile.c_str());
 		//FILE *fp = fopen(mMatrixFile.c_str(),"r+b");
@@ -194,6 +197,7 @@ void TerrainMaster::setTerrainHeights(S32 start_x,S32 start_y,S32 sample)
 			mCurrentTerrain->updateGrid(Point2I(0,0),
 				Point2I(mCurrentTerrain->getBlockSize()-1,mCurrentTerrain->getBlockSize()-1),true);
 
+			Con::printf("saving terrain: %s",filename);
 			sprintf(filename,"%s/%d_%d.ter",mOutputDirectory.c_str(),start_x,start_y);
 			mCurrentTerrain->save(filename);//FIX - get MatrixFile minus the .bin extension
 		} else {

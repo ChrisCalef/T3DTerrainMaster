@@ -27,7 +27,8 @@ function TerrainMaster::onRemove()
 
 function saveTerrainRow(%rowNum)
 {
-   %blockSize = theTM.getBlockSize()-1;
+   %blockSize = (theTM.worldBlockSize/theTM.squareSize)-1;
+   //%blockSize = theTM.getBlockSize()-1;
    echo("loading row for terrain block size: " @ %blockSize);
    for (%i=0;%i<mFloor(theTM.numColumns/%blockSize);%i++)
    {
@@ -37,7 +38,8 @@ function saveTerrainRow(%rowNum)
 
 function saveTerrainColumn(%columnNum)
 {
-   %blockSize = theTM.getBlockSize()-1;
+   %blockSize = (theTM.worldBlockSize/theTM.squareSize)-1;
+   //%blockSize = theTM.getBlockSize()-1;
    echo("loading row for terrain block size: " @ %blockSize);
    for (%i=0;%i<mFloor(theTM.numRows/%blockSize);%i++)
    {
@@ -45,10 +47,11 @@ function saveTerrainColumn(%columnNum)
    }
 }
 
-function saveTerrainAll()
+function saveTerrain()
 {
    echo("SAVING ALL TERRAIN");
-   %blockSize = theTM.getBlockSize()-1;
+   %blockSize = (theTM.worldBlockSize/theTM.squareSize)-1;
+   //%blockSize = theTM.getBlockSize()-1;
    echo("loading row for terrain block size: " @ %blockSize);
    for (%i=0;%i<mFloor(theTM.numColumns/%blockSize);%i++)
    {

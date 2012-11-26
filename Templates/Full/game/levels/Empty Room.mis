@@ -72,8 +72,8 @@ new SimGroup(MissionGroup) {
       outputDirectory = "art/terrains/SouthernWillamette256/backup";
       inputDirectory = "art/terrains/SouthernWillamette256";
       checkCycle = "1000";
-      loadDistance = "5120";
-      dropDistance = "7680";
+      loadDistance = "5100";
+      dropDistance = "7650";
       left_map_x = "459750";
       lower_map_y = "4843900";
       right_map_x = "520120";
@@ -87,8 +87,8 @@ new SimGroup(MissionGroup) {
       worldBlockSize = "2560";
       canSave = "1";
       canSaveDynamicFields = "1";
-         position = "0 0 0";
-         rotation = "1 0 0 0";
+      position = "0 0 0";
+      rotation = "1 0 0 0";
    };
    new SimGroup(PlayerDropPoints) {
       canSaveDynamicFields = "1";
@@ -96,7 +96,7 @@ new SimGroup(MissionGroup) {
 
       new SpawnSphere() {
          canSaveDynamicFields = "1";
-         Position = "300 200 600";
+         Position = "360 200 600";
          rotation = "1 0 0 0";
          scale = "1 1 1";
          dataBlock = "SpawnSphereMarker";

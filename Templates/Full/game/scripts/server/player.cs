@@ -64,7 +64,9 @@ function Armor::onAdd(%this, %obj)
    //checkTerrain();//This also assumes only one player, the whole thing
    //needs a rewrite anyway to go multiplayer properly.
    //schedule(10000,0,checkTerrain);//Nope, better give it a few seconds to get assembled...
-   tryCheckTerrain();//Fine, give the check-for-theTM test its own function.
+   
+   ////HERE: uncomment this when you are ready to start terrain paging.
+   //tryCheckTerrain();
 }
 
 function Armor::onRemove(%this, %obj)
