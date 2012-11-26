@@ -63,9 +63,10 @@ TERRAIN MASTER
 
 4. How can I use TM for paging terrains in T3D?
 
-5. How can I help the Terrain Master project improve?
+5. Future directions, and how you can help...
 
----------------------------------------------------------
+
+------------------------------------------------------------------------------------------------
 
 1. What is the T3D Terrain Master?
 
@@ -86,6 +87,7 @@ TERRAIN MASTER
  hoped that among the first group of early adopters there may be someone who can point out
  the problem and help us on our way!
 
+------------------------------------------------------------------------------------------------
 
 2. What do I need to get started? 
 
@@ -119,6 +121,7 @@ TERRAIN MASTER
 
          http://www.bundysoft.com/L3DT/downloads/standard.php
 
+------------------------------------------------------------------------------------------------
 
 3. How can I use TM to import USGS DEM data?
 
@@ -269,8 +272,9 @@ TERRAIN MASTER
  saving them all back out.  I don't even know if this would be better off done with a script or a plugin,
  but I hope to find out before too long. 
  
- 
-3. How can I use TM for paging terrains in T3D?
+------------------------------------------------------------------------------------------------
+
+4. How can I use TM for paging terrains in T3D?
 
     But anyway, now that you have either generated your own great batch of T3D terrain files, or else downloaded 
  mine and dropped them into your art/terrains folder, the next step is to try out the terrain pager!  
@@ -303,14 +307,50 @@ TERRAIN MASTER
  terrain tiles' distance, but you can probably get away with higher numbers.  You will find the limit when 
  Torque starts to crash on you. ;-)
 
+------------------------------------------------------------------------------------------------
 
-4. Future directions, and how you can help...
+5. Future directions, and how you can help...
+
+    First, how can you help?  Well, I'm glad you asked!  I have a couple of pressing concerns right now with 
+ this build:
+
+    A) Crash Bug:  The Terrain Master at time of this writing actually has a _huge_ crash bug, rendering it 
+ inoperable outside of the first few terrains loaded... :-( ... but I'm hoping that by exposing my code to the 
+ light of public scrutiny, my blundering errors shall be promptly corrected.  If you are a competent and 
+ experienced, or just novice and lucky, Torque programmer, and you have a moment, then please look over the
+ code here, and tell me: what is wrong with my process for deleting terrain blocks??  It appears that I am 
+ failing to free some huge chunk of memory somewhere, or some equally horrible crime, because whether or not 
+ I am deleting terrains, when I add beyond a certain number of tiles the program crashes, off in some dll world
+ where Visual Studio debugging doesn't give me a useful callstack.  
+
+    I'm calling the Waahmbulance, and it is you...
+
+    B) The other major area where I could use assistance from the knowledgeable people in the Torque community
+ is with scripting, or coding plugins for, L3DT.  This is an amazing app, and I'm very excited to be using it, 
+ but with all my other work I have not had time to dig deep into and and find out how to do what I need to do. 
+ Which is, namely:  loop through a directory full of .ter files, and for each terrain, call all the Calculation
+ Wizard operations, generate Alpha Maps, and save everything back out as T3D terrains, with no interactive button
+ clicking necessary.  I have 483 files to work with in just this one batch, and a very limited supply of patience,
+ so if I am ever to see this project to its logical conclusion using L3DT, I'm going to need help!
+
+    Beyond those two immediate pressing needs, you are invited to fork and advance to your heart's content.  I
+ would be honored to accept pull requests for any improvement you feel would be generally useful.  One direction
+ for improvement I'm already considering is to include a much larger scale "mega-terrain" with a square size of 
+ 40 or 80 meters, to be used outside all of the currently loaded smaller terrain tiles.  This would require 
+ dropping out areas of the larger terrain, and replacing them when local terrains are deleted again, but it could
+ enable the player to have a view of extremely distant landmarks which would actually be expected by a player 
+ familiar with the geography in question.  (For example, South Sister is a mountain clearly visible from Eugene
+ on a good day, but it is more than sixty miles away, far beyond any range that we would wish to fill with 10
+ meter terrain data!
+
+    As of this writing, this project is only a couple of weekends deep, plus a few extra nights, but I hope it 
+ provides a foundation worthy of building on.
 
 
-
-
-
-
+ Chris Calef
+ chris@brokeassgames.com
+ BrokeAss Games, LLC
+ Eugene, OR
 
 
 
