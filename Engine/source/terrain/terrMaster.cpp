@@ -248,7 +248,7 @@ void TerrainMaster::checkTerrain()
    Vector<SceneObject*> kTerrains;
 
 	Box3F bounds;
-	bounds.set(Point3F(0,0,0),Point3F(1024000,1024000,1000));
+	bounds.set(Point3F(0,0,0),Point3F(1024000,1024000,10000));
    gServerContainer.findObjectList(bounds, CameraObjectType, &kCameras);
 	gServerContainer.findObjectList(bounds, PlayerObjectType, &kPlayers);
 	gServerContainer.findObjectList(bounds, TerrainObjectType, &kTerrains);
@@ -301,6 +301,8 @@ void TerrainMaster::checkTerrain()
 	//clientPos = clientPosVec[0];//TEMP!  Need to do loop below for each clientPos, but for now just do it for 
 	//the first.
 	//////////////////////////////////////////////////////
+	Con::printf("client pos: %f %f %f  cameraInControl: %d numCameras %d",
+			clientPos.x,clientPos.y,clientPos.z,cameraInControl,kCameras.size());
 
 	F32 blockSize = mWorldBlockSize - mSquareSize;
 	if (!mCurrentTerrain)
@@ -412,8 +414,8 @@ void TerrainMaster::checkTerrain()
 		}
 		else if ((mActiveTerrains[index])&&(diff.len() > mDropDistance))
 		{
-			//Con::printf("we should delete terrain %d %d, loadedTerrains %d, diff %f, dropdist %f clientPos %f %f %f",
-			//		grid.x,grid.y,mLoadedTerrains.size(),diff.len(),mDropDistance,clientPos.x,clientPos.y,clientPos.z);
+			Con::printf("deleting terrain %d %d, loadedTerrains %d, diff %f, dropdist %f clientPos %f %f %f",
+					grid.x,grid.y,mLoadedTerrains.size(),diff.len(),mDropDistance,clientPos.x,clientPos.y,clientPos.z);
 			//mActiveTerrains[index]->deleteObject();//Hm, apparently not the right way.
 			mActiveTerrains[index] = NULL;//Maybe call out to script?  Or just figure it out.
 			mLoadedTerrains.remove(terrain);
