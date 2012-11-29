@@ -111,15 +111,13 @@ TERRAIN MASTER
 
          http://freegeographytools.com/3dem_setup.exe
 
-     The second program is called L3DT, and you might as well grab it right now as well.  If you 
- have the budget (it's only $35), I recommend getting the professional version, to support the 
- developer and get some nice addional bells & whistles:
+     The second program is called L3DT, and you might as well grab it right now as well if you 
+ have the budget (indie license is $35). There is a free version as well, but among many other
+ limitations, it won't export Torque terrain files, so it won't do you much good right now.
+
+ The professional version can be found here:
 
          http://www.bundysoft.com/L3DT/downloads/professional.php
-
- But there is also a free version here:
-
-         http://www.bundysoft.com/L3DT/downloads/standard.php
 
 ------------------------------------------------------------------------------------------------
 
@@ -270,7 +268,16 @@ TERRAIN MASTER
  I did not get far enough in my L3DT research to figure out a way to automate the next part of the process,
  which is running each of these terrains through L3DT's Calculation Wizard and Alpha Map generator, and 
  saving them all back out.  I don't even know if this would be better off done with a script or a plugin,
- but I hope to find out before too long. 
+ but I hope to find out before too long.  In the meantime, you can process a few of your files by hand to 
+ see what they will look like, and you can certainly go through and do your whole pile manually if you need
+ them done right now... but I do hope to find a more civilized way soon.
+
+    Whatever you do, you will need to decide where to put the finished product.  I suggest keeping your 
+ original terrain files in the "backup" directory as mentioned above, and then either exporting finished, 
+ processed terrains to the directory above (SouthernWillamette256 in my example), or just copying up the
+ originals to this directory if you are in a hurry, OR if you are really in a hurry, simply changing the 
+ inputDirectory parameter of your TerrainMaster object to your backup directory, if you do not want to 
+ do any further processing to your files.
  
 ------------------------------------------------------------------------------------------------
 
