@@ -296,8 +296,10 @@ void TerrainMaster::checkTerrain()
 		}
 	} 
 	if (clientPos.len()==0.0)
+	{
+		Con::printf("client pos  =	0 0 0 !!!!!");
 		return;//If an error condition results in clientPos = (0,0,0), bail.
-
+	}
 	//clientPos = clientPosVec[0];//TEMP!  Need to do loop below for each clientPos, but for now just do it for 
 	//the first.
 	//////////////////////////////////////////////////////

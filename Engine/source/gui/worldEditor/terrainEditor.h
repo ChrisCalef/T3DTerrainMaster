@@ -485,6 +485,7 @@ class TerrainEditor : public EditTSCtrl
 
       void renderPoints( const Vector<GFXVertexPCT> &pointList );
 
+		void autoMaterialLayer( F32 mMinHeight, F32 mMaxHeight, F32 mMinSlope, F32 mMaxSlope , bool mUndo = false);
 
       DECLARE_CONOBJECT(TerrainEditor);     
 };

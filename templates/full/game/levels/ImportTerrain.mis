@@ -79,7 +79,7 @@ new SimGroup(MissionGroup) {
          outdoorWeight = "1";
          isAIControlled = "0";
          dataBlock = "SpawnSphereMarker";
-         position = "100 100 100";
+         position = "100 100 38.8941";
          rotation = "1 0 0 0";
          scale = "1 1 1";
          canSave = "1";
@@ -88,7 +88,7 @@ new SimGroup(MissionGroup) {
             homingCount = "0";
             lockCount = "0";
       };
-   };   
+   };
    new TerrainMaster(theTM) {
       squareSize = "10";
       matrixFile = "art/terrains/SouthernWillamette.bin";
@@ -110,8 +110,8 @@ new SimGroup(MissionGroup) {
       worldBlockSize = "2560";
       canSave = "1";
       canSaveDynamicFields = "1";
-      position = "0 0 0";
-      rotation = "1 0 0 0";
+         position = "0 0 0";
+         rotation = "1 0 0 0";
    };
    new TerrainBlock(BaseTerrain) {
       terrainFile = "art/terrains/ImportTerrain.ter";
@@ -120,11 +120,11 @@ new SimGroup(MissionGroup) {
       baseTexSize = "1024";
       lightMapSize = "256";
       screenError = "16";
-      position = "0 0 -500";
+      position = "0 0 0";
       rotation = "1 0 0 0";
       canSave = "1";
       canSaveDynamicFields = "1";
-   };  
+   };
 };
 //--- OBJECT WRITE END ---
 

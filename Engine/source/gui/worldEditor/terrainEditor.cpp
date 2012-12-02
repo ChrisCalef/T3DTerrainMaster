@@ -2933,3 +2933,93 @@ ConsoleMethod( TerrainEditor, setSlopeLimitMaxAngle, F32, 3, 3, 0)
 	object->mSlopeMaxAngle = angle;
 	return angle;
 }
+
+// >>>  
+//------------------------------------------------------------------------------  
+void TerrainEditor::autoMaterialLayer( F32 mMinHeight, F32 mMaxHeight, F32 mMinSlope, F32 mMaxSlope, bool mUndo )  
+{
+	if (!mActiveTerrain)  
+		return;  
+
+	S32 mat = getPaintMaterialIndex();  
+	if (mat == -1)  
+		return;  
+
+	// undo >>  
+	if (mUndo) 
+	{
+	  mUndoSel = new Selection;  
+	}// undo <<  
+
+	U32 terrBlocks = mActiveTerrain->getBlockSize();  
+	for (U32 y=0;y<terrBlocks;y++) {  
+		for (U32 x=0;x<terrBlocks;x++) {  
+			// get info  
+			GridPoint gp;  
+			gp.terrainBlock = mActiveTerrain;  
+			gp.gridPos.set(x, y);  
+
+			GridInfo gi;  
+			getGridInfo(gp, gi);  
+
+			if (gi.mMaterial==mat)  
+				continue;  
+
+			Point3F wp;  
+			gridToWorld(gp, wp);  
+
+			if (!(wp.z>=mMinHeight && wp.z<=mMaxHeight))  
+				continue;  
+
+			// objspace >>  
+			// transform wp to object space  
+			Point3F op;  
+			mActiveTerrain->getWorldTransform().mulP(wp, &op);  
+
+			Point3F norm;  
+			mActiveTerrain->getNormal(Point2F(op.x, op.y), &norm, true);  
+			// objspace <<  
+
+			if (mMinSlope>0)  
+				if (norm.z > mSin(mDegToRad(90.0f-mMinSlope)))  
+					continue;  
+
+			if (mMaxSlope<90)  
+				if (norm.z < mSin(mDegToRad(90.0f-mMaxSlope)))  
+					continue;  
+
+			// ok, looks like we can change the material here  
+			gi.mMaterialChanged = true;  
+			// undo >>  
+			if (mUndo) 
+			{
+				mUndoSel->add(gi);  
+			}
+			// undo <<  
+			gi.mMaterial = mat;  
+			setGridInfo(gi);  
+		}  
+	}  
+
+	// undo >>  
+	if (mUndo) 
+	{
+		if(mUndoSel->size())  
+			submitUndo( mUndoSel );  
+		else  
+			delete mUndoSel;  
+	}
+	//mUndoSel = 0;  
+	// undo <<  
+
+	scheduleMaterialUpdate();     
+}  
+
+ConsoleMethod( TerrainEditor, autoMaterialLayer, void, 6, 7, "(float minHeight, float maxHeight, float minSlope, float maxSlope, bool undo)")  
+{  
+	if (argc==7)
+		object->autoMaterialLayer( dAtof( argv[2] ), dAtof( argv[3] ), dAtof( argv[4] ), dAtof( argv[5] ), dAtob( argv[6] ) );  
+	else
+		object->autoMaterialLayer( dAtof( argv[2] ), dAtof( argv[3] ), dAtof( argv[4] ), dAtof( argv[5] ) );  
+}  
+// <<<  
