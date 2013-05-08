@@ -20,17 +20,6 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-new TerrainMaterial()
-{
-   internalName = "grass1";
-   diffuseMap = "art/terrains/Example/grass1";
-   detailMap = "art/terrains/Example/grass1_d";
-   detailSize = "10";
-   isManaged = "1";
-   detailBrightness = "1";
-   Enabled = "1";
-   diffuseSize = "200";
-};
 
 new TerrainMaterial()
 {
@@ -62,14 +51,15 @@ new TerrainMaterial()
 new TerrainMaterial()
 {
    internalName = "dirt_grass";
-   diffuseMap = "art/terrains/Example/dirt_grass";
-   detailMap = "art/terrains/Example/dirt_grass_d";
+   diffuseMap = "art/terrains/BAG_TP/512/Grass/Grass12";
+   detailMap = "art/terrains/BAG_TP/512/Grass/Grass12_d";
    detailSize = "5";
    detailDistance = "100";
    isManaged = "1";
    detailBrightness = "1";
    Enabled = "1";
    diffuseSize = "200";
+   normalMap = "art/terrains/BAG_TP/512/Grass/Grass12_NRM";
 };
 
 new TerrainMaterial()
@@ -85,3 +75,39 @@ new TerrainMaterial()
    diffuseSize = "200";
 };
 
+
+new TerrainMaterial()
+{
+   diffuseMap = "art/terrains/BAG_TP/512/Ice_Snow/Snow02";
+   diffuseSize = "200";
+   detailMap = "art/terrains/Example/grass1_d";
+   detailSize = "10";
+   internalName = "snowtop";
+   isManaged = "1";
+   detailBrightness = "1";
+   enabled = "1";
+};
+
+new TerrainMaterial()
+{
+   diffuseMap = "art/terrains/WorldServer/city1";
+   internalName = "city1";
+};
+
+new TerrainMaterial()
+{
+   diffuseMap = "art/terrains/WorldServer/forest1a";
+   internalName = "forest1a";
+};
+
+new TerrainMaterial()
+{
+   diffuseMap = "art/terrains/WorldServer/drycrop1";
+   internalName = "drycrop1";
+};
+
+new TerrainMaterial()
+{
+   diffuseMap = "art/terrains/WorldServer/sand_hires";
+   internalName = "sand_hires";
+};
