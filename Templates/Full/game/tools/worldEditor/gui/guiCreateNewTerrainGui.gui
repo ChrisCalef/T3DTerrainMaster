@@ -309,6 +309,8 @@ function CreateNewTerrainGui::onWake( %this )
    
    %rezList = %this-->theRezList;
    %rezList.clear();
+   %rezList.add( "64", 64 );
+   %rezList.add( "128", 128 );
    %rezList.add( "256", 256 );
    %rezList.add( "512", 512 );
    %rezList.add( "1024", 1024 );
