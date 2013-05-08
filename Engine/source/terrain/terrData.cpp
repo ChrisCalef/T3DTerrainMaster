@@ -1264,6 +1264,32 @@ DefineEngineMethod( TerrainBlock, save, bool, ( const char* fileName),,
 //   return static_cast<TerrainBlock*>(object)->save(filename);
 //}
 
+//BAG, experimental, just trying to see what is going on with lightmaps.
+ConsoleMethod(TerrainBlock, checkLM, void, 2, 2, "")
+{
+	if (object->mLightMap)
+	{
+		Con::printf("light map size: %d %d",object->mLightMap->getWidth(),object->mLightMap->getHeight());
+	}
+	//object->clearLightMap();
+}
+
+void TerrainBlock::saveLightMap( )
+{
+	FileStream outstream;
+	Con::printf("saving light map!!");
+	outstream.open( "lightmap.png", Torque::FS::File::Write);
+	mLightMap->writeBitmap("png",outstream);
+	outstream.close();
+
+}
+//End Experimental
+
+ConsoleMethod(TerrainBlock, saveLightMap, void, 2, 2, "")
+{
+	object->saveLightMap();
+}
+
 ConsoleDocFragment _getTerrainHeight1(
    "@brief Gets the terrain height at the specified position\n\n"
    "@param position The world space point, minus the z (height) value. Formatted as (\"x y\")\n\n"

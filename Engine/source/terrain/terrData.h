@@ -59,6 +59,7 @@ class TerrainBlock : public SceneObject
 
    friend class TerrainEditor;
    friend class TerrainCellMaterial;
+   friend class TerrainMaster;//Fix, change to WorldServerClient
 
 protected:
 
@@ -76,8 +77,6 @@ protected:
 
    Box3F mBounds;
 
-   ///
-   GBitmap *mLightMap;
 
    /// The lightmap dimensions in pixels.
    U32 mLightMapSize;
@@ -217,6 +216,9 @@ protected:
    static bool _setLightMapSize( void *obj, const char *index, const char *data );
 
 public:
+
+   ///
+   GBitmap *mLightMap;
 
    enum 
    {
@@ -436,6 +438,7 @@ public:
 	bool mIsEdge;
 	bool mNeighborTerrainLoaded[8];
 	Point3F mNeighborTerrainPos[8];
+	void saveLightMap();//(for debugging)
 
 };
 
