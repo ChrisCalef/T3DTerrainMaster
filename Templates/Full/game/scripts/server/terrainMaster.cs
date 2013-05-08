@@ -1,4 +1,7 @@
 
+//WORLD SERVER: MOST OF THIS IS NOW OBSOLETE.  loadStaticShape() might still be handy, but since 
+//we're no longer saving a giant array of torque terrains, we don't need any of those functions. 
+
 
 ///////////////////////////////////////////////////////
 // TERRAIN MASTER 
@@ -64,7 +67,6 @@ function saveTerrain()
 
 function checkTerrain()
 {//Might want to rename this, it is really terrain master checking for everything.
-   echo("checking terrain!");
    if (theTM.checkCycle)
    {
       theTM.checkTerrain();   
@@ -145,4 +147,9 @@ function loadStaticShape(%filename,%pos,%quat,%scale,%id)
    };
    StaticGroup.add(%temp);   
    MissionGroup.add(%temp);   
+}
+
+function WorldServerReloadSkybox()
+{
+   WS_SkyboxCubemap.updateFaces();//HERE: deal with different cubemap names?  Naw...  
 }
