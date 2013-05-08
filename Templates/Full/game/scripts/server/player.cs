@@ -65,8 +65,9 @@ function Armor::onAdd(%this, %obj)
    //needs a rewrite anyway to go multiplayer properly.
    //schedule(10000,0,checkTerrain);//Nope, better give it a few seconds to get assembled...
    
-   ////HERE: uncomment this when you are ready to start terrain paging.
-   tryCheckTerrain();
+   /////////////////////////////////////////////////////////////////
+   //tryCheckTerrain();/// uncomment to start terrain paging
+   /////////////////////////////////////////////////////////////////
 }
 
 function Armor::onRemove(%this, %obj)
